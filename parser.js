@@ -26,12 +26,15 @@ function verify(record) {
 function parse(filename){
     let data = [];
     let count = 0;
+    // parsing the excel file.
     const file = xlsx.readFile(filename);
     const sheets = file.SheetNames
     for (let i =0;i<1; i++){
+        // parsing each of the sheets in excel file
         const temp = xlsx.utils.sheet_to_json(file.Sheets[file.SheetNames[i]]);
         temp.forEach((record) => {
             if(verify(record)){
+                // if the data is valid we return it for insertion in database.
                 data.push({
                     "reg_no" : record['Reg_no'],
                     "session_start" : record['Session'].split('-')[0],
@@ -45,11 +48,13 @@ function parse(filename){
                 });
             }
             else {
+                // if the data is not valid then we will increment the count of invalid records.
+                // we can expand this functionality to return the exact row, column and value for which validation of data fails.
                 count ++;
             }
-            return {};
         });
     }
+    // returns the valid records and the count of invalid records in json format.
     return {
         "invalid" : count,
         "data" : data,
