@@ -33,6 +33,7 @@ router.post('/', (req, res) => {
         } else if (err) {
             return res.send(err);
         }
+        // parsing the uploaded file. Not asyncronous now as I haven't learnt that topic yet.
         let result = parse(req.file.path);
         res.send(result);
     });
